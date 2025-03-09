@@ -46,7 +46,7 @@ public class BotSpawn implements CommandExecutor {
         String randomSkin = defaultSkins.get(random.nextInt(defaultSkins.size()));
 
         // ✅ Generate a unique bot name including the skin name
-        String botName = "bot_" + randomSkin + "_" + (random.nextInt(9000) + 1000);
+        String botName = "AI_" + randomSkin + "_" + (random.nextInt(9) + random.nextInt(9));
 
         // ✅ Create NPC using Citizens API
         NPC bot = CitizensAPI.getNPCRegistry().createNPC(EntityType.PLAYER, botName);
