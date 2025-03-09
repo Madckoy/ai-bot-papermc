@@ -1,6 +1,8 @@
 /home/serge/projects/github/ai-bot-papermc/aibotplugin/src/main/java/com/devone/aibot/commands/BotSpawn.java
 /home/serge/projects/github/ai-bot-papermc/aibotplugin/src/main/java/com/devone/aibot/AIBotPlugin.java
+/home/serge/projects/github/ai-bot-papermc/aibotplugin/src/main/java/com/devone/aibot/botlogic/ResourceDetecting.java
 /home/serge/projects/github/ai-bot-papermc/aibotplugin/src/main/java/com/devone/aibot/commands/BotSelect.java
+/home/serge/projects/github/ai-bot-papermc/aibotplugin/src/main/java/com/devone/aibot/botlogic/ResourceGathering.java
 /home/serge/projects/github/ai-bot-papermc/aibotplugin/src/main/java/com/devone/aibot/botlogic/BotPatroling.java
 /home/serge/projects/github/ai-bot-papermc/aibotplugin/src/main/java/com/devone/aibot/commands/ZoneRemove.java
 /home/serge/projects/github/ai-bot-papermc/aibotplugin/src/main/java/com/devone/aibot/commands/BotRemove.java

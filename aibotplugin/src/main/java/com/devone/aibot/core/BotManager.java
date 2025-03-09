@@ -63,28 +63,37 @@ public class BotManager {
 
     private void loadExistingBots() {
         plugin.getLogger().info("[AIBotPlugin] Loading existing bots...");
-        
-        // Clear the existing bot map to avoid duplicates
+    
         botMap.clear();
     
-        // Load bots from Citizens API
         for (NPC npc : CitizensAPI.getNPCRegistry()) {
-            if (npc == null) continue; // Avoid null references
+            if (npc == null) continue;
     
-            String botName = npc.getName(); // Ensure we get the correct bot name
+            String botName = npc.getName();
     
-            // Add the valid bot to the map if it's not already in the map
             if (!botMap.containsKey(botName)) {
-                botMap.put(botName, npc); // Add to bot map if it's not already there
+                botMap.put(botName, npc);
                 plugin.getLogger().info("[AIBotPlugin] Reloaded bot: " + botName + " (ID: " + npc.getId() + ")");
-
-                //start patroling
-                botPatroling.startPatrol(npc); //default action for bots
+    
+                // Проверяем, что бот заспавнился
+                if (npc.getEntity() == null) {
+                    plugin.getLogger().warning("[AIBotPlugin] Bot entity is null, delaying patrol start...");
+                    continue; // Пропускаем, так как бот ещё не загружен
+                }
+    
+                // Устанавливаем центр патруля (если не задан)
+                if (botPatroling.getPatrolCenter() == null) {
+                    botPatroling.setPatrolCenter(npc.getEntity().getLocation());
+                }
+    
+                // Запускаем патруль
+                botPatroling.startPatrol(npc);
             }
         }
     
         plugin.getLogger().info("[AIBotPlugin] Bot loading complete. Total bots: " + botMap.size());
-    }    
+    }
+    
 
     public void cleanupBots() {
         for (NPC npc : botMap.values()) {
@@ -126,4 +135,18 @@ public class BotManager {
         return plugin;
     }
 
+    public NPC getOrSelectBot(UUID playerId) {
+        NPC bot = getSelectedBot(playerId);
+        
+        // Если бот не выбран и есть только один бот - выбираем его автоматически
+        Collection<NPC> bots = getAllBots();
+        if (bot == null && bots.size() == 1) {
+            bot = bots.iterator().next();
+            selectBot(playerId, bot);
+            getPlugin().getLogger().info("[AIBotPlugin] Auto-selected bot: " + bot.getName() + " for player " + playerId);
+        }
+    
+        return bot;
+    }
+    
 }

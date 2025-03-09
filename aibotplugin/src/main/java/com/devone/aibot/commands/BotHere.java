@@ -29,15 +29,7 @@ public class BotHere implements CommandExecutor {
         }
 
         Player player = (Player) sender;
-        NPC bot = botManager.getSelectedBot(player.getUniqueId());
-
-        // Авто-выбор бота, если только один
-        Collection<NPC> bots = botManager.getAllBots();
-        if (bot == null && bots.size() == 1) {
-            bot = bots.iterator().next();
-            botManager.selectBot(player.getUniqueId(), bot);
-            player.sendMessage("§aAuto-selected bot: " + bot.getName());
-        }
+        NPC bot = botManager.getOrSelectBot(player.getUniqueId());
 
         if (bot == null || !bot.isSpawned()) {
             player.sendMessage("§cYou must select a spawned bot first.");

@@ -29,54 +29,6 @@ public class BotNavigating {
         this.waterHandler = new WaterHandling(plugin);
     }
 
-    public void startNavigation() {
-        visitedLocations.clear();
-        lastLocation = bot.getEntity().getLocation();
-        stuckTime = System.currentTimeMillis();
-
-        new BukkitRunnable() {
-            @Override
-            public void run() {
-                if (!bot.isSpawned() || !player.isOnline()) {
-                    cancel();
-                    return;
-                }
-
-                Location botLoc = bot.getEntity().getLocation();
-                Location targetLoc = player.getLocation();
-
-                // Проверяем, не застрял ли бот в воде
-                if (waterHandler.isInWater(botLoc)) {
-                    waterHandler.moveOutOfWater(bot);
-                    return;
-                }
-
-                // Проверяем, не застрял ли бот перед препятствием
-                if (isStuck(botLoc)) {
-                    teleportThroughObstacle(botLoc);
-                    return;
-                }
-
-                // Двигаем бота к игроку
-                bot.getNavigator().setTarget(targetLoc);
-
-                // Если бот достиг игрока, завершаем команду
-                if (botLoc.distance(targetLoc) < 2) {
-                    plugin.getLogger().info("[AIBotPlugin] Bot reached the player. Stopping.");
-                    bot.getNavigator().cancelNavigation();
-                    visitedLocations.clear();
-                    cancel();
-                }
-
-                // Обновляем последнее местоположение для проверки застревания
-                if (!botLoc.equals(lastLocation)) {
-                    lastLocation = botLoc;
-                    stuckTime = System.currentTimeMillis();
-                }
-            }
-        }.runTaskTimer(plugin, 10L, 10L);
-    }
-
     private boolean isStuck(Location botLoc) {
         long elapsed = System.currentTimeMillis() - stuckTime;
         return visitedLocations.contains(botLoc) || elapsed > 1000; // 1 секунды
@@ -132,4 +84,71 @@ public class BotNavigating {
                type == Material.DARK_OAK_FENCE_GATE;
     }
     
+    public void startNavigation() {
+        visitedLocations.clear();
+        lastLocation = bot.getEntity().getLocation();
+        stuckTime = System.currentTimeMillis();
+    
+        new BukkitRunnable() {
+            @Override
+            public void run() {
+                if (!bot.isSpawned() || !player.isOnline()) {
+                    cancel();
+                    return;
+                }
+    
+                Location botLoc = bot.getEntity().getLocation();
+                Location targetLoc = player.getLocation();
+                double distance = botLoc.distance(targetLoc);
+    
+                // If too far away, teleport closer
+                if (distance > 30) {
+                    plugin.getLogger().info("[AIBotPlugin] Target too far (" + distance + " blocks), teleporting bot closer.");
+                    Location safeLoc = targetLoc.clone().subtract(targetLoc.getDirection().multiply(10));
+                    bot.teleport(safeLoc, PlayerTeleportEvent.TeleportCause.PLUGIN);
+                    return;
+                }
+    
+                // Check if bot is stuck in water
+                if (waterHandler.isInWater(botLoc)) {
+                    waterHandler.moveOutOfWater(bot);
+                    return;
+                }
+    
+                // Check if bot is stuck in an obstacle
+                if (isStuck(botLoc)) {
+                    teleportThroughObstacle(botLoc);
+                    return;
+                }
+    
+                // Move bot toward player
+                bot.getNavigator().setTarget(targetLoc);
+    
+                // If bot is not navigating, teleport closer
+                if (!bot.getNavigator().isNavigating()) {
+                    plugin.getLogger().info("[AIBotPlugin] No navigation path found, teleporting bot closer.");
+                    Location safeLoc = targetLoc.clone().subtract(targetLoc.getDirection().multiply(10));
+                    bot.teleport(safeLoc, PlayerTeleportEvent.TeleportCause.PLUGIN);
+                    return;
+                }
+    
+                // If bot reached the player, stop navigation
+                if (distance < 2) {
+                    plugin.getLogger().info("[AIBotPlugin] Bot reached the player. Stopping.");
+                    bot.getNavigator().cancelNavigation();
+                    visitedLocations.clear();
+                    cancel();
+                }
+    
+                // Update last location to check for being stuck
+                if (!botLoc.equals(lastLocation)) {
+                    lastLocation = botLoc;
+                    stuckTime = System.currentTimeMillis();
+                }
+            }
+        }.runTaskTimer(plugin, 10L, 10L);
+    }
+    
+    
+
 }
