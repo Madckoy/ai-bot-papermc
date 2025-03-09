@@ -17,6 +17,12 @@ depend:
 load: POSTWORLD
 
 commands:
+
+  bot-select:
+    description: Selects a bot to receive bot commands.
+    usage: /bot-select <bot_name>
+    permission: aibotplugin.bot.select
+
   bot-spawn:
     description: Spawns a bot with a random skin and unique name.
     usage: /bot-spawn

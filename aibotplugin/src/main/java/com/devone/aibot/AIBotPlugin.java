@@ -1,15 +1,25 @@
 package com.devone.aibot;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.PluginCommand;
+import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import net.citizensnpcs.api.CitizensAPI;
+import net.citizensnpcs.api.npc.NPC;
+
+
 public class AIBotPlugin extends JavaPlugin implements Listener {
 
     private ZoneManager zoneManager;
+    private final Map<String, NPC> botMap = new HashMap<>(); // ✅ Now initialized properly
+
 
     @Override
     public void onEnable() {
@@ -24,11 +34,25 @@ public class AIBotPlugin extends JavaPlugin implements Listener {
             }
         }
 
+        // Ensure botMap is repopulated after a restart
+        Bukkit.getScheduler().runTaskLater(this, () -> {
+            if (Bukkit.getPluginManager().getPlugin("Citizens") == null || !Bukkit.getPluginManager().isPluginEnabled("Citizens")) {
+                getLogger().severe("Citizens plugin is not installed or failed to load! Disabling AI Bot Plugin.");
+                getServer().getPluginManager().disablePlugin(this);
+                return;
+            }
+
+            // Reload existing bots from Citizens API after restart
+            loadExistingBots();
+        }, 40L); // Delay ensures Citizens is fully loaded
+
+
         // Initialize Zone Manager
         zoneManager = new ZoneManager(getDataFolder());
 
         // Register Bot Commands
-        BotCommandHandler botCommandHandler = new BotCommandHandler(this);
+        BotCommandHandler botCommandHandler = new BotCommandHandler(this, botMap);
+        registerCommand("bot-select", botCommandHandler);
         registerCommand("bot-spawn", botCommandHandler);
         registerCommand("bot-list", botCommandHandler);
         registerCommand("bot-remove", botCommandHandler);
@@ -66,4 +90,15 @@ public class AIBotPlugin extends JavaPlugin implements Listener {
             event.getPlayer().sendMessage("§cYou cannot break blocks in a protected zone!");
         }
     }
+
+    private void loadExistingBots() {
+        for (NPC npc : CitizensAPI.getNPCRegistry()) {
+            if (npc.getEntity() instanceof Player) {
+                botMap.put(npc.getName(), npc);
+                getLogger().info("Reloaded bot: " + npc.getName());
+            }
+        }
+    }
+
+
 }
