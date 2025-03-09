@@ -31,15 +31,21 @@ public class BotFollowCommand implements CommandExecutor {
 
         Player player = (Player) sender;
         // Select bot for the player
-        final NPC bot = botManager.getSelectedBot(player.getUniqueId());
+        NPC sbot = botManager.getSelectedBot(player.getUniqueId());
 
         // Auto-select bot if only 1 bot exists
         Collection<NPC> bots = botManager.getAllBots();
-        if (bot == null && bots.size() == 1) {
+        
+        if (sbot == null && bots.size() == 1) {
             final NPC autoSelectedBot = bots.iterator().next();  // Auto-select if only one bot exists
             botManager.selectBot(player.getUniqueId(), autoSelectedBot);
+            // Select bot for the player
+            sbot = botManager.getSelectedBot(player.getUniqueId());
+
             player.sendMessage("§aAuto-selected bot: " + autoSelectedBot.getName());
         }
+       
+        final NPC bot = sbot;
 
         if (bot == null) {
             player.sendMessage("§cYou must first select a bot using /bot-select <bot_name>.");
@@ -55,7 +61,7 @@ public class BotFollowCommand implements CommandExecutor {
         Navigator navigator = bot.getNavigator();
         navigator.setTarget(player, true);
         navigator.getLocalParameters()
-                .range(3.5f)  // Set the range the bot follows
+                .range(32.0f)  // Set the range the bot follows
                 .stuckAction(null)  // Define what to do if the bot gets stuck
                 .useNewPathfinder(true);  // Use new pathfinding if available
 

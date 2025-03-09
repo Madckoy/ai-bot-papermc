@@ -1,0 +1,17 @@
+/home/serge/projects/github/ai-bot-papermc/aibotplugin/src/main/java/com/devone/aibot/commands/ZoneListCommand.java
+/home/serge/projects/github/ai-bot-papermc/aibotplugin/src/main/java/com/devone/aibot/BotManager.java
+/home/serge/projects/github/ai-bot-papermc/aibotplugin/src/main/java/com/devone/aibot/ProtectedZone.java
+/home/serge/projects/github/ai-bot-papermc/aibotplugin/src/main/java/com/devone/aibot/AIBotPlugin.java
+/home/serge/projects/github/ai-bot-papermc/aibotplugin/src/main/java/com/devone/aibot/commands/BotSelectCommand.java
+/home/serge/projects/github/ai-bot-papermc/aibotplugin/src/main/java/com/devone/aibot/commands/BotRemoveCommand.java
+/home/serge/projects/github/ai-bot-papermc/aibotplugin/src/main/java/com/devone/aibot/commands/BotFollowCommand.java
+/home/serge/projects/github/ai-bot-papermc/aibotplugin/src/main/java/com/devone/aibot/commands/BotListCommand.java
+/home/serge/projects/github/ai-bot-papermc/aibotplugin/src/main/java/com/devone/aibot/commands/ZoneRemoveCommand.java
+/home/serge/projects/github/ai-bot-papermc/aibotplugin/src/main/java/com/devone/aibot/CommandDispatcher.java
+/home/serge/projects/github/ai-bot-papermc/aibotplugin/src/main/java/com/devone/aibot/commands/BotSpawnCommand.java
+/home/serge/projects/github/ai-bot-papermc/aibotplugin/src/main/java/com/devone/aibot/EventHandlerManager.java
+/home/serge/projects/github/ai-bot-papermc/aibotplugin/src/main/java/com/devone/aibot/commands/BotRemoveAllCommand.java
+/home/serge/projects/github/ai-bot-papermc/aibotplugin/src/main/java/com/devone/aibot/commands/ZoneAddCommand.java
+/home/serge/projects/github/ai-bot-papermc/aibotplugin/src/main/java/com/devone/aibot/BotMovement.java
+/home/serge/projects/github/ai-bot-papermc/aibotplugin/src/main/java/com/devone/aibot/Main.java
+/home/serge/projects/github/ai-bot-papermc/aibotplugin/src/main/java/com/devone/aibot/ZoneManager.java
