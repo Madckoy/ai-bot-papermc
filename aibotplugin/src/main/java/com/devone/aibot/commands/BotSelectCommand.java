@@ -3,7 +3,6 @@ package com.devone.aibot.commands;
 import com.devone.aibot.AIBotPlugin;
 import com.devone.aibot.BotManager;
 import net.citizensnpcs.api.npc.NPC;
-import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -35,7 +34,7 @@ public class BotSelectCommand implements CommandExecutor {
         }
 
         String botName = args[0];
-        NPC bot = botManager.getBot(botName); // ✅ Using BotManager
+        NPC bot = botManager.getBot(botName); // Using BotManager to get the NPC by name
 
         if (bot == null) {
             player.sendMessage("§cBot '" + botName + "' not found.");
@@ -44,15 +43,19 @@ public class BotSelectCommand implements CommandExecutor {
         }
 
         // ✅ Store the selected bot in BotManager
-        botManager.selectBot(player.getUniqueId(), botName);
+        botManager.selectBot(player.getUniqueId(), bot);
 
         player.sendMessage("§aYou have selected bot '" + botName + "'.");
-        plugin.getLogger().info("[AIBotPlugin] Player " + player.getName() + " selected bot: " + botName);
 
-        // ✅ Use Adventure API to send modern chat messages
+        // ✅ Bot responds with a modern chat message to confirm using Adventure API
         String botMessage = "I am now under your command, " + player.getName() + "!";
         Component chatMessage = Component.text("§7[§b" + botName + "§7] " + botMessage);
-        Bukkit.getServer().sendMessage(chatMessage);
+
+        // ✅ Send the confirmation message to the player who selected the bot
+        player.sendMessage(chatMessage);  // Send the confirmation to the player
+
+        // ✅ Log the bot selection
+        plugin.getLogger().info("[AIBotPlugin] Player " + player.getName() + " selected bot: " + botName);
 
         return true;
     }

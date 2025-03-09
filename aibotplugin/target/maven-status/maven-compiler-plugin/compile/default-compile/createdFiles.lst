@@ -6,6 +6,7 @@ com/devone/aibot/ZoneManager.class
 com/devone/aibot/commands/ZoneListCommand.class
 com/devone/aibot/commands/BotRemoveAllCommand.class
 com/devone/aibot/BotMovement$1.class
+com/devone/aibot/commands/BotFollowCommand$1.class
 com/devone/aibot/CommandDispatcher.class
 com/devone/aibot/commands/BotFollowCommand.class
 com/devone/aibot/Main.class

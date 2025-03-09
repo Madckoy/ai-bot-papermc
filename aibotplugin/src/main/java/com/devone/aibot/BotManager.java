@@ -3,12 +3,13 @@ package com.devone.aibot;
 import net.citizensnpcs.api.CitizensAPI;
 import net.citizensnpcs.api.npc.NPC;
 import org.bukkit.Bukkit;
+
 import java.util.*;
 
 public class BotManager {
     private final AIBotPlugin plugin;
     private final Map<String, NPC> botMap = new HashMap<>();
-    private final Map<UUID, String> selectedBots = new HashMap<>(); // ✅ Track selected bot per player
+    private final Map<UUID, NPC> selectedBots = new HashMap<>(); // Track selected bot per player (stores NPC directly)
 
     public BotManager(AIBotPlugin plugin) {
         this.plugin = plugin;
@@ -53,15 +54,15 @@ public class BotManager {
     // ✅ Load bots from Citizens API on plugin startup
     private void loadExistingBots() {
         plugin.getLogger().info("[AIBotPlugin] Loading existing bots...");
-    
+
         for (NPC npc : CitizensAPI.getNPCRegistry()) {
             if (npc == null) continue; // ✅ Avoid null references
-    
+
             String botName = npc.getName(); // ✅ Ensure we get the correct bot name
             botMap.put(botName, npc);
             plugin.getLogger().info("[AIBotPlugin] Reloaded bot: " + botName + " (ID: " + npc.getId() + ")");
         }
-    
+
         plugin.getLogger().info("[AIBotPlugin] Bot loading complete. Total bots: " + botMap.size());
     }
 
@@ -73,32 +74,30 @@ public class BotManager {
         }
         botMap.clear();
         plugin.getLogger().info("All bots have been cleaned up.");
-    }    
+    }
 
     public Collection<NPC> getAllBots() {
         return botMap.values();
     }
-    
+
     public void clearAllBots() {
         botMap.clear();
         plugin.getLogger().info("[AIBotPlugin] Cleared all bots.");
     }
-    
+
     // ✅ Select a bot for a player
-    public void selectBot(UUID playerUUID, String botName) {
-        selectedBots.put(playerUUID, botName);
-        plugin.getLogger().info("[AIBotPlugin] Player " + playerUUID + " selected bot: " + botName);
+    public void selectBot(UUID playerUUID, NPC bot) {
+        selectedBots.put(playerUUID, bot);
+        plugin.getLogger().info("[AIBotPlugin] Player " + playerUUID + " selected bot: " + bot.getName());
     }
 
     // ✅ Get the selected bot for a player
     public NPC getSelectedBot(UUID playerUUID) {
-        String botName = selectedBots.get(playerUUID);
-        return botName != null ? botMap.get(botName) : null;
+        return selectedBots.get(playerUUID);
     }
 
     // ✅ Clear the selected bot for a player
     public void clearSelectedBot(UUID playerUUID) {
         selectedBots.remove(playerUUID);
     }
-
 }
