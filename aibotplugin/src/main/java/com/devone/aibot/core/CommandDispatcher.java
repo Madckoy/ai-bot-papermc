@@ -39,7 +39,6 @@ public class CommandDispatcher implements CommandExecutor {
         registerCommand("bot-remove-all", new BotRemoveAll(plugin, botManager));
         registerCommand("bot-here", new BotHere(plugin, botManager));
         registerCommand("bot-patrol", new BotPatrol(plugin, botManager));
-
         registerCommand("zone-add", new ZoneAdd(plugin, zoneManager));
         registerCommand("zone-remove", new ZoneRemove(plugin, zoneManager));
         registerCommand("zone-list", new ZoneList(plugin, zoneManager));
@@ -47,8 +46,10 @@ public class CommandDispatcher implements CommandExecutor {
 
     // ✅ Registers a single command and assigns an executor
     private void registerCommand(String command, CommandExecutor executor) {
+        plugin.getLogger().info("[AIBotPlugin] register command: " + command);
         commandExecutors.put(command.toLowerCase(), executor);
         plugin.getCommand(command).setExecutor(this);
+        plugin.getLogger().info("[AIBotPlugin] command is registered: " + command);
     }
 
     @Override

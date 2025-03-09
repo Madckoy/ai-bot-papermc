@@ -28,7 +28,7 @@ commands:
     usage: /bot-spawn
     permission: aibotplugin.bot.spawn
 
-  bot-partol:
+  bot-patrol:
     description: Spawns a bot with a random skin and unique name.
     usage: /bot-patrol
     permission: aibotplugin.bot.patrol
@@ -53,11 +53,6 @@ commands:
     usage: /bot-here
     permission: aibotplugin.bot.here
 
-  bot-go-to:
-    description: Commands the selected bot to move to specific coordinates.
-    usage: /bot-go-to <x> <y> <z>
-    permission: aibotplugin.bot.goto
-
   bot-stop:
     description: Stops the selected bot from moving.
     usage: /bot-stop
@@ -77,29 +72,3 @@ commands:
     description: Lists all protected zones.
     usage: /zone-list
     permission: aibotplugin.zone.list
-
-# Define permissions for better access control
-permissions:
-  aibotplugin.*:
-    description: Grants all AIBotPlugin permissions.
-    children:
-      aibotplugin.bot.*: true
-      aibotplugin.zone.*: true
-
-  aibotplugin.bot.*:
-    description: Grants all bot-related permissions.
-    children:
-      aibotplugin.bot.spawn: true
-      aibotplugin.bot.list: true
-      aibotplugin.bot.remove: true
-      aibotplugin.bot.removeall: true
-      aibotplugin.bot.follow: true
-      aibotplugin.bot.goto: true
-      aibotplugin.bot.stop: true
-
-  aibotplugin.zone.*:
-    description: Grants all zone-related permissions.
-    children:
-      aibotplugin.zone.add: true
-      aibotplugin.zone.remove: true
-      aibotplugin.zone.list: true
