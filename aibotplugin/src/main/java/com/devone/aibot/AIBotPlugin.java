@@ -2,9 +2,15 @@ package com.devone.aibot;
 
 import org.bukkit.plugin.java.JavaPlugin;
 
+import com.devone.aibot.core.BotManager;
+import com.devone.aibot.core.CommandDispatcher;
+import com.devone.aibot.core.EventManager;
+import com.devone.aibot.core.ZoneManager;
+
 public class AIBotPlugin extends JavaPlugin {
     private ZoneManager zoneManager;
     private BotManager botManager;
+ 
 
     @Override
     public void onEnable() {
@@ -21,6 +27,7 @@ public class AIBotPlugin extends JavaPlugin {
 
         // ✅ Initialize event handler manager
         new EventManager(this, zoneManager, botManager);
+
 
         getLogger().info("AI Bot Plugin has been enabled successfully!");
     }
