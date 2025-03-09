@@ -1,0 +1,82 @@
+name: AIBotPlugin
+main: com.devone.aibot.AIBotPlugin
+version: 1.2
+api-version: 1.20
+author: DevOne
+description: A PaperMC plugin that allows managing multiple AI bots with Citizens NPCs and random skins.
+
+# Ensures the plugin loads AFTER Citizens to prevent dependency issues
+depend:
+  - Citizens 
+
+# Alternatively, use `softdepend` if Citizens is optional
+# softdepend:
+#   - Citizens
+
+# Ensures plugin loads at the correct time
+load: POSTWORLD
+
+commands:
+  bot-spawn:
+    description: Spawns a bot with a random skin and unique name.
+    usage: /bot-spawn
+    permission: aibotplugin.bot.spawn
+
+  bot-list:
+    description: Lists all active bots.
+    usage: /bot-list
+    permission: aibotplugin.bot.list
+
+  bot-remove:
+    description: Removes a bot by name.
+    usage: /bot-remove <name>
+    permission: aibotplugin.bot.remove
+
+  bot-follow:
+    description: Makes a bot follow the player.
+    usage: /bot-follow <bot_name>
+    permission: aibotplugin.bot.follow
+
+  bot-stop:
+    description: Stops the bot from moving.
+    usage: /bot-stop <bot_name>
+    permission: aibotplugin.bot.stop
+
+  zone-add:
+    description: Adds a protected zone at your location.
+    usage: /zone-add <radius> <zone_name>
+    permission: aibotplugin.zone.add
+
+  zone-remove:
+    description: Removes a protected zone.
+    usage: /zone-remove <zone_name>
+    permission: aibotplugin.zone.remove
+
+  zone-list:
+    description: Lists all protected zones.
+    usage: /zone-list
+    permission: aibotplugin.zone.list
+
+# Define permissions for better access control
+permissions:
+  aibotplugin.*:
+    description: Grants all AIBotPlugin permissions.
+    children:
+      aibotplugin.bot.*: true
+      aibotplugin.zone.*: true
+
+  aibotplugin.bot.*:
+    description: Grants all bot-related permissions.
+    children:
+      aibotplugin.bot.spawn: true
+      aibotplugin.bot.list: true
+      aibotplugin.bot.remove: true
+      aibotplugin.bot.follow: true
+      aibotplugin.bot.stop: true
+
+  aibotplugin.zone.*:
+    description: Grants all zone-related permissions.
+    children:
+      aibotplugin.zone.add: true
+      aibotplugin.zone.remove: true
+      aibotplugin.zone.list: true
