@@ -43,10 +43,10 @@ commands:
     usage: /bot-remove-all
     permission: aibotplugin.bot.removeall
 
-  bot-follow:
-    description: Makes the selected bot follow the player.
-    usage: /bot-follow
-    permission: aibotplugin.bot.follow
+  bot-here:
+    description: Makes the selected bot approach the player.
+    usage: /bot-here
+    permission: aibotplugin.bot.here
 
   bot-go-to:
     description: Commands the selected bot to move to specific coordinates.

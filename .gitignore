@@ -1,1 +1,12 @@
 /.vscode
+aibotplugin/deploy.log
+aibotplugin/target/AIBotPlugin-1.1-SNAPSHOT.jar
+aibotplugin/target/maven-archiver/pom.properties
+aibotplugin/target/original-AIBotPlugin-1.1-SNAPSHOT.jar
+aibotplugin/target/AIBotPlugin-1.1-SNAPSHOT.jar
+.gitignore
+.gitignore
+aibotplugin/deploy.log
+aibotplugin/target/AIBotPlugin-1.1-SNAPSHOT.jar
+aibotplugin/target/original-AIBotPlugin-1.1-SNAPSHOT.jar
+aibotplugin/target/maven-archiver/pom.properties

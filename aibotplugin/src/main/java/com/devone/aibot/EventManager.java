@@ -7,12 +7,12 @@ import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.entity.Player;
 import net.citizensnpcs.api.npc.NPC;
 
-public class EventHandlerManager implements Listener {
+public class EventManager implements Listener {
     private final AIBotPlugin plugin;
     private final ZoneManager zoneManager;
     private final BotManager botManager;
 
-    public EventHandlerManager(AIBotPlugin plugin, ZoneManager zoneManager, BotManager botManager) {
+    public EventManager(AIBotPlugin plugin, ZoneManager zoneManager, BotManager botManager) {
         this.plugin = plugin;
         this.zoneManager = zoneManager;
         this.botManager = botManager;

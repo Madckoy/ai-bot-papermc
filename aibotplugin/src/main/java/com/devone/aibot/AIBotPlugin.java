@@ -20,7 +20,7 @@ public class AIBotPlugin extends JavaPlugin {
         new CommandDispatcher(this, botManager, zoneManager);
 
         // ✅ Initialize event handler manager
-        new EventHandlerManager(this, zoneManager, botManager);
+        new EventManager(this, zoneManager, botManager);
 
         getLogger().info("AI Bot Plugin has been enabled successfully!");
     }

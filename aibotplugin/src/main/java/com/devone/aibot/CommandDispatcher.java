@@ -5,7 +5,7 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import com.devone.aibot.commands.BotFollowCommand;
+import com.devone.aibot.commands.BotHereCommand;
 import com.devone.aibot.commands.BotListCommand;
 import com.devone.aibot.commands.BotRemoveAllCommand;
 import com.devone.aibot.commands.BotRemoveCommand;
@@ -35,7 +35,7 @@ public class CommandDispatcher implements CommandExecutor {
         registerCommand("bot-list", new BotListCommand(plugin, botManager));
         registerCommand("bot-remove", new BotRemoveCommand(plugin, botManager));
         registerCommand("bot-remove-all", new BotRemoveAllCommand(plugin, botManager));
-        registerCommand("bot-follow", new BotFollowCommand(plugin, botManager));
+        registerCommand("bot-here", new BotHereCommand(plugin, botManager));
         //registerCommand("bot-stop", new BotStopCommand(plugin, botManager));
 
         registerCommand("zone-add", new ZoneAddCommand(zoneManager));
