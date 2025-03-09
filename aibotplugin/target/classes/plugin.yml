@@ -3,9 +3,9 @@ main: com.devone.aibot.AIBotPlugin
 version: 1.2
 api-version: 1.20
 author: DevOne
-description: A PaperMC plugin that allows managing multiple AI bots with Citizens NPCs and random skins.
+description: A PaperMC plugin that allows managing AI bots with Citizens NPCs, random skins, and protected zones.
 
-# Ensures the plugin loads AFTER Citizens to prevent dependency issues
+# Ensure Citizens is loaded before this plugin to avoid issues
 depend:
   - Citizens 
 
@@ -35,17 +35,27 @@ commands:
 
   bot-remove:
     description: Removes a bot by name.
-    usage: /bot-remove <name>
+    usage: /bot-remove <bot_name>
     permission: aibotplugin.bot.remove
 
+  bot-remove-all:
+    description: Removes all spawned bots.
+    usage: /bot-remove-all
+    permission: aibotplugin.bot.removeall
+
   bot-follow:
-    description: Makes a bot follow the player.
-    usage: /bot-follow <bot_name>
+    description: Makes the selected bot follow the player.
+    usage: /bot-follow
     permission: aibotplugin.bot.follow
 
+  bot-go-to:
+    description: Commands the selected bot to move to specific coordinates.
+    usage: /bot-go-to <x> <y> <z>
+    permission: aibotplugin.bot.goto
+
   bot-stop:
-    description: Stops the bot from moving.
-    usage: /bot-stop <bot_name>
+    description: Stops the selected bot from moving.
+    usage: /bot-stop
     permission: aibotplugin.bot.stop
 
   zone-add:
@@ -77,7 +87,9 @@ permissions:
       aibotplugin.bot.spawn: true
       aibotplugin.bot.list: true
       aibotplugin.bot.remove: true
+      aibotplugin.bot.removeall: true
       aibotplugin.bot.follow: true
+      aibotplugin.bot.goto: true
       aibotplugin.bot.stop: true
 
   aibotplugin.zone.*:
