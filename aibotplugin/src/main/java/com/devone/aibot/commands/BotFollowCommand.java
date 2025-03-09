@@ -4,18 +4,16 @@ import com.devone.aibot.AIBotPlugin;
 import com.devone.aibot.BotManager;
 import net.citizensnpcs.api.npc.NPC;
 import net.citizensnpcs.api.ai.Navigator;
-import org.bukkit.Bukkit;
-import org.bukkit.Material;
-import org.bukkit.block.Block;
-import org.bukkit.block.BlockFace;
-import org.bukkit.block.data.Openable;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
+import java.util.Collection;
+
 public class BotFollowCommand implements CommandExecutor {
+
     private final AIBotPlugin plugin;
     private final BotManager botManager;
 
@@ -32,7 +30,16 @@ public class BotFollowCommand implements CommandExecutor {
         }
 
         Player player = (Player) sender;
-        NPC bot = botManager.getSelectedBot(player.getUniqueId());
+        // Select bot for the player
+        final NPC bot = botManager.getSelectedBot(player.getUniqueId());
+
+        // Auto-select bot if only 1 bot exists
+        Collection<NPC> bots = botManager.getAllBots();
+        if (bot == null && bots.size() == 1) {
+            final NPC autoSelectedBot = bots.iterator().next();  // Auto-select if only one bot exists
+            botManager.selectBot(player.getUniqueId(), autoSelectedBot);
+            player.sendMessage("§aAuto-selected bot: " + autoSelectedBot.getName());
+        }
 
         if (bot == null) {
             player.sendMessage("§cYou must first select a bot using /bot-select <bot_name>.");
@@ -48,13 +55,14 @@ public class BotFollowCommand implements CommandExecutor {
         Navigator navigator = bot.getNavigator();
         navigator.setTarget(player, true);
         navigator.getLocalParameters()
-                .range(4.0f)
-                .stuckAction(null)
-                .useNewPathfinder(true);
+                .range(3.5f)  // Set the range the bot follows
+                .stuckAction(null)  // Define what to do if the bot gets stuck
+                .useNewPathfinder(true);  // Use new pathfinding if available
 
         player.sendMessage("§aYour bot is now following you and can open doors.");
         plugin.getLogger().info("[AIBotPlugin] Bot '" + bot.getName() + "' is following player " + player.getName());
 
+        // Path update loop (runs every 10 ticks = 0.5 seconds)
         new BukkitRunnable() {
             @Override
             public void run() {
@@ -63,40 +71,13 @@ public class BotFollowCommand implements CommandExecutor {
                     return;
                 }
 
-                Block botBlock = bot.getEntity().getLocation().getBlock();
-                Block frontBlock = botBlock.getRelative(BlockFace.NORTH);
-
-                if (isDoor(frontBlock)) {
-                    openDoor(frontBlock);
-                }
-
+                // Keep updating bot movement
                 if (navigator.isNavigating()) {
-                    navigator.setTarget(player.getLocation());
+                    navigator.setTarget(player.getLocation());  // Keep setting the target to the player's location
                 }
             }
-        }.runTaskTimer(plugin, 10L, 10L); // Run every 0.5 seconds
+        }.runTaskTimer(plugin, 10L, 10L);  // Run every 0.5 seconds
 
         return true;
-    }
-
-    private boolean isDoor(Block block) {
-        Material type = block.getType();
-        return type == Material.OAK_DOOR || type == Material.SPRUCE_DOOR || // Add all door materials
-               type == Material.BIRCH_DOOR || type == Material.IRON_DOOR;
-    }
-
-    private void openDoor(Block block) {
-        if (!(block.getBlockData() instanceof Openable)) return;
-
-        Openable door = (Openable) block.getBlockData();
-        if (!door.isOpen()) {
-            door.setOpen(true);
-            block.setBlockData(door);
-
-            Bukkit.getScheduler().runTaskLater(plugin, () -> {
-                door.setOpen(false);
-                block.setBlockData(door);
-            }, 60L); // Close the door after 3 seconds
-        }
     }
 }

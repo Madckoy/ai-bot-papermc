@@ -28,9 +28,13 @@ public class AIBotPlugin extends JavaPlugin {
     @Override
     public void onDisable() {
         getLogger().info("AI Bot Plugin is shutting down...");
-        botManager.cleanupBots(); // ✅ Custom method to clean up bots properly before shutdown
+    
+        // Cleanup all bots, including despawning any "AI-Bot" instances
+        botManager.cleanupBots();
+    
         getLogger().info("AI Bot Plugin has been disabled.");
     }
+    
 
     private void ensureDataFolderExists() {
         if (!getDataFolder().exists() && getDataFolder().mkdirs()) {
