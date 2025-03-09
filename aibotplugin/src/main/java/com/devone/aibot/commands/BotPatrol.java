@@ -1,6 +1,6 @@
 package com.devone.aibot.commands;
 
-import com.devone.aibot.botlogic.BotPatroling;
+import com.devone.aibot.AIBotPlugin;
 import com.devone.aibot.core.BotManager;
 
 import org.bukkit.command.Command;
@@ -9,10 +9,13 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 public class BotPatrol implements CommandExecutor {
-    private final BotPatroling patroling;
+    @SuppressWarnings("unused")
+    private final AIBotPlugin plugin;
+    private final BotManager botManager;
 
-    public BotPatrol(BotManager botManage) {
-        this.patroling = botManage.getBotPatroling();
+    public BotPatrol(AIBotPlugin plugin, BotManager botManager) {
+        this.plugin = plugin;
+        this.botManager = botManager;
     }
 
     @Override
@@ -23,7 +26,7 @@ public class BotPatrol implements CommandExecutor {
         }
 
         Player player = (Player) sender;
-        patroling.setPatrolCenter(player.getLocation());
+        botManager.getBotPatroling().setPatrolCenter(player.getLocation());
         player.sendMessage("§aBot patrol center set to your location.");
         return true;
     }

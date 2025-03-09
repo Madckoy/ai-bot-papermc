@@ -77,6 +77,9 @@ public class BotManager {
             if (!botMap.containsKey(botName)) {
                 botMap.put(botName, npc); // Add to bot map if it's not already there
                 plugin.getLogger().info("[AIBotPlugin] Reloaded bot: " + botName + " (ID: " + npc.getId() + ")");
+
+                //start patroling
+                botPatroling.startPatrol(npc); //default action for bots
             }
         }
     
@@ -122,4 +125,5 @@ public class BotManager {
     public AIBotPlugin getPlugin() {
         return plugin;
     }
+
 }

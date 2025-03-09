@@ -1,5 +1,6 @@
 package com.devone.aibot.commands;
 
+import com.devone.aibot.AIBotPlugin;
 import com.devone.aibot.core.ProtectedZone;
 import com.devone.aibot.core.ZoneManager;
 
@@ -11,7 +12,7 @@ import org.bukkit.entity.Player;
 public class ZoneList implements CommandExecutor {
     private final ZoneManager zoneManager;
 
-    public ZoneList(ZoneManager zoneManager) {
+    public ZoneList(AIBotPlugin plugin, ZoneManager zoneManager) {
         this.zoneManager = zoneManager;
     }
 

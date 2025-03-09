@@ -28,6 +28,11 @@ commands:
     usage: /bot-spawn
     permission: aibotplugin.bot.spawn
 
+  bot-partol:
+    description: Spawns a bot with a random skin and unique name.
+    usage: /bot-patrol
+    permission: aibotplugin.bot.patrol
+
   bot-list:
     description: Lists all active bots.
     usage: /bot-list

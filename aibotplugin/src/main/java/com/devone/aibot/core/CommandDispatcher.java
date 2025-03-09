@@ -8,6 +8,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import com.devone.aibot.AIBotPlugin;
 import com.devone.aibot.commands.BotHere;
 import com.devone.aibot.commands.BotList;
+import com.devone.aibot.commands.BotPatrol;
 import com.devone.aibot.commands.BotRemoveAll;
 import com.devone.aibot.commands.BotRemove;
 import com.devone.aibot.commands.BotSelect;
@@ -37,11 +38,11 @@ public class CommandDispatcher implements CommandExecutor {
         registerCommand("bot-remove", new BotRemove(plugin, botManager));
         registerCommand("bot-remove-all", new BotRemoveAll(plugin, botManager));
         registerCommand("bot-here", new BotHere(plugin, botManager));
-        //registerCommand("bot-stop", new BotStopCommand(plugin, botManager));
+        registerCommand("bot-patrol", new BotPatrol(plugin, botManager));
 
-        registerCommand("zone-add", new ZoneAdd(zoneManager));
-        registerCommand("zone-remove", new ZoneRemove(zoneManager));
-        registerCommand("zone-list", new ZoneList(zoneManager));
+        registerCommand("zone-add", new ZoneAdd(plugin, zoneManager));
+        registerCommand("zone-remove", new ZoneRemove(plugin, zoneManager));
+        registerCommand("zone-list", new ZoneList(plugin, zoneManager));
     }
 
     // ✅ Registers a single command and assigns an executor
