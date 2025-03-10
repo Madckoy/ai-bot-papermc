@@ -3,6 +3,7 @@ package com.devone.aibot.core;
 import net.citizensnpcs.api.CitizensAPI;
 import net.citizensnpcs.api.npc.NPC;
 import org.bukkit.Bukkit;
+import org.bukkit.scheduler.BukkitRunnable;
 
 import com.devone.aibot.AIBotPlugin;
 import com.devone.aibot.botlogic.BotPatroling;
@@ -61,40 +62,7 @@ public class BotManager {
         return botMap.containsKey(name);
     }
 
-    private void loadExistingBots() {
-        plugin.getLogger().info("[AIBotPlugin] Loading existing bots...");
-    
-        botMap.clear();
-    
-        for (NPC npc : CitizensAPI.getNPCRegistry()) {
-            if (npc == null) continue;
-    
-            String botName = npc.getName();
-    
-            if (!botMap.containsKey(botName)) {
-                botMap.put(botName, npc);
-                plugin.getLogger().info("[AIBotPlugin] Reloaded bot: " + botName + " (ID: " + npc.getId() + ")");
-    
-                // Проверяем, что бот заспавнился
-                if (npc.getEntity() == null) {
-                    plugin.getLogger().warning("[AIBotPlugin] Bot entity is null, delaying patrol start...");
-                    continue; // Пропускаем, так как бот ещё не загружен
-                }
-    
-                // Устанавливаем центр патруля (если не задан)
-                if (botPatroling.getPatrolCenter() == null) {
-                    botPatroling.setPatrolCenter(npc.getEntity().getLocation());
-                }
-    
-                // Запускаем патруль
-                botPatroling.startPatrol(npc);
-            }
-        }
-    
-        plugin.getLogger().info("[AIBotPlugin] Bot loading complete. Total bots: " + botMap.size());
-    }
-    
-
+    // ✅ Cleanup all bots
     public void cleanupBots() {
         for (NPC npc : botMap.values()) {
             if (npc != null && npc.isSpawned()) {
@@ -148,5 +116,61 @@ public class BotManager {
     
         return bot;
     }
+ 
     
+    private void loadExistingBots() {
+        plugin.getLogger().info("[AIBotPlugin] Loading existing bots...");
+    
+        botMap.clear();
+    
+        for (NPC npc : CitizensAPI.getNPCRegistry()) {
+            if (npc == null) continue;
+    
+            String botName = npc.getName();
+            botMap.put(botName, npc);
+    
+            plugin.getLogger().info("[AIBotPlugin] Reloaded bot: " + botName + " (ID: " + npc.getId() + ")");
+            plugin.getLogger().info("[AIBotPlugin] Bot state: isSpawned=" + npc.isSpawned() +
+                    ", entity=" + (npc.getEntity() != null ? npc.getEntity().getType() : "null"));
+    
+            if (!npc.isSpawned() || npc.getEntity() == null) {
+                plugin.getLogger().warning("[AIBotPlugin] Bot is not fully initialized. Trying to respawn...");
+                npc.spawn(npc.getStoredLocation()); // Принудительный респавн
+            }
+    
+            new BukkitRunnable() {
+                int attempts = 0;
+    
+                @Override
+                public void run() {
+                    plugin.getLogger().info("[AIBotPlugin] Checking spawn state: isSpawned=" + npc.isSpawned() +
+                            ", entity=" + (npc.getEntity() != null ? npc.getEntity().getType() : "null"));
+    
+                    if (npc.isSpawned() && npc.getEntity() != null) {
+                        plugin.getLogger().info("[AIBotPlugin] Bot is now fully spawned. Starting patrol.");
+                        
+                        if (botPatroling.getPatrolCenter() == null) {
+                            botPatroling.setPatrolCenter(npc.getEntity().getLocation());
+                        }
+                        botPatroling.startPatrol(npc);
+                        cancel();
+                        return;
+                    }
+    
+                    attempts++;
+                    if (attempts >= 10) {
+                        plugin.getLogger().warning("[AIBotPlugin] Bot did not fully initialize after 5 seconds. Skipping patrol.");
+                        cancel();
+                    } else {
+                        plugin.getLogger().warning("[AIBotPlugin] Bot is still not fully spawned. Waiting...");
+                    }
+                }
+            }.runTaskTimer(plugin, 10L, 10L);
+        }
+    
+        plugin.getLogger().info("[AIBotPlugin] Bot loading complete. Total bots: " + botMap.size());
+    }
+    
+    
+
 }

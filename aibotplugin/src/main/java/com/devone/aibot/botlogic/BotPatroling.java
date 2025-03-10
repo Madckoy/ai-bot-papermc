@@ -22,6 +22,10 @@ public class BotPatroling {
         this.botManager = mgr;
     }
 
+    public BotManager getBotManager() {
+        return botManager;
+    }
+
     public void startPatrol(NPC bot) {
 
         if (bot.getEntity() == null) {
@@ -31,15 +35,15 @@ public class BotPatroling {
         //--------------------
         Location tree = ResourceDetecting.findNearbyTree(bot.getEntity().getLocation());
         if (tree != null) {
-            new ResourceGathering(bot).chopTree(tree);
+            new ResourceGathering(bot, this).chopTree(tree);
         } else {
             Item item = ResourceDetecting.findNearbyItem(bot.getEntity().getLocation());
             if (item != null) {
-                new ResourceGathering(bot).collectItem(item);
+                new ResourceGathering(bot, this).collectItem(item);
             } else {
                 LivingEntity mob = ResourceDetecting.findNearbyHostileMob(bot.getEntity().getLocation());
                 if (mob != null) {
-                    new ResourceGathering(bot).attackMob(mob);
+                    new ResourceGathering(bot, this).attackMob(mob);
                 } else {
                     // Если ничего не найдено, продолжаем патрулирование
                     botManager.getBotPatroling().continuePatrol(bot);
