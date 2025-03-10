@@ -589,3 +589,29 @@
 ✅ Successfully copied AIBotPlugin-1.1-SNAPSHOT.jar to 192.168.3.3:/opt/apps/minecraft/paper/plugins
 🔄 Restarting Minecraft server on 192.168.3.3...
 ✅ Minecraft server restarted successfully!
+📦 Plugin Details: Size=52199 bytes, Last Modified=2025-03-10 06:10:01.444247637 +0100
+🚀 Copying AIBotPlugin-1.1-SNAPSHOT.jar to /opt/apps/minecraft/paper/plugins
+✅ Successfully copied AIBotPlugin-1.1-SNAPSHOT.jar to /opt/apps/minecraft/paper/plugins
+🔄 Restarting Minecraft server on localhost...
+⚠️ Failed to restart the Minecraft server. Check manually.
+📦 Plugin Details: Size=52199 bytes, Last Modified=2025-03-10 09:07:29.993857320 +0100
+🚀 Copying AIBotPlugin-1.1-SNAPSHOT.jar to serge@192.168.3.33:/opt/apps/minecraft/paper/plugins
+❌ Failed to copy the plugin!
+📦 Plugin Details: Size=52199 bytes, Last Modified=2025-03-10 09:07:29.993857320 +0100
+🚀 Copying AIBotPlugin-1.1-SNAPSHOT.jar to serge@192.168.3.33:/opt/apps/minecraft/paper/plugins
+❌ Failed to copy the plugin!
+📦 Plugin Details: Size=52199 bytes, Last Modified=2025-03-10 09:07:29.993857320 +0100
+🚀 Copying AIBotPlugin-1.1-SNAPSHOT.jar to serge@192.168.3.33:/opt/apps/minecraft/paper/plugins
+✅ Successfully copied AIBotPlugin-1.1-SNAPSHOT.jar to 192.168.3.33:/opt/apps/minecraft/paper/plugins
+🔄 Restarting Minecraft server on 192.168.3.33...
+⚠️ Failed to restart the Minecraft server. Check manually.
+📦 Plugin Details: Size=52199 bytes, Last Modified=2025-03-10 09:07:29.993857320 +0100
+🚀 Copying AIBotPlugin-1.1-SNAPSHOT.jar to serge@192.168.3.33:/opt/apps/minecraft/paper/plugins
+✅ Successfully copied AIBotPlugin-1.1-SNAPSHOT.jar to 192.168.3.33:/opt/apps/minecraft/paper/plugins
+🔄 Restarting Minecraft server on 192.168.3.33...
+⚠️ Failed to restart the Minecraft server. Check manually.
+📦 Plugin Details: Size=52199 bytes, Last Modified=2025-03-10 09:23:15.260016449 +0100
+🚀 Copying AIBotPlugin-1.1-SNAPSHOT.jar to serge@192.168.3.33:/opt/apps/minecraft/paper/plugins
+✅ Successfully copied AIBotPlugin-1.1-SNAPSHOT.jar to 192.168.3.33:/opt/apps/minecraft/paper/plugins
+🔄 Restarting Minecraft server on 192.168.3.33...
+✅ Minecraft server restarted successfully!

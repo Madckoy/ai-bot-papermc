@@ -101,7 +101,7 @@
                         <configuration>
                             <executable>bash</executable>
                             <arguments>
-                                <argument>deploy.sh</argument>
+                                <argument>deploy_remote.sh</argument>
                             </arguments>
                         </configuration>
                     </execution>
