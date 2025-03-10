@@ -53,7 +53,8 @@ public class BotPatroling {
                     return;
                 }
     
-                botManager.getPlugin().getLogger().info("[AIBotPlugin] New patrol target: " + patrolPoint);
+                // botManager.getPlugin().getLogger().info("[AIBotPlugin] New patrol target: " + patrolPoint);
+                
                 try {
                     bot.getNavigator().setTarget(patrolPoint);
                 } catch (Exception e) {
