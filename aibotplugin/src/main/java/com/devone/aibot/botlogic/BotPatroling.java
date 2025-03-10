@@ -31,14 +31,14 @@ public class BotPatroling {
 
         if (patrolCenter == null) {
             patrolCenter = bot_loc;
-            botManager.getPlugin().getLogger().info("[AIBotPlugin] Patrol center set to bot's current location.");
+            //botManager.getPlugin().getLogger().info("[AIBotPlugin] Patrol center set to bot's current location.");
         }
     
         botManager.getPlugin().getLogger().info("[AIBotPlugin] Bot patrol started.");
 
 
         if (!bot.isSpawned() || bot.getEntity() == null) {
-            botManager.getPlugin().getLogger().warning("[AIBotPlugin] Bot is not fully initialized. Trying to respawn...");
+            //botManager.getPlugin().getLogger().warning("[AIBotPlugin] Bot is not fully initialized. Trying to respawn...");
             bot.spawn(bot.getStoredLocation()); // Принудительный респавн
         }
     
@@ -48,8 +48,8 @@ public class BotPatroling {
  
                 Location patrolPoint = getSafePatrolPoint();
                 if (patrolPoint == null) {
-                    botManager.getPlugin().getLogger().info("[AIBotPlugin] No safe patrol point found! Retrying...");
-                    startPatrol(bot); // Перезапускаем патруль с новой точкой
+                    //botManager.getPlugin().getLogger().info("[AIBotPlugin] No safe patrol point found! Retrying...");
+                    //startPatrol(bot); // Перезапускаем патруль с новой точкой
                     return;
                 }
     
@@ -66,7 +66,7 @@ public class BotPatroling {
                     @Override
                     public void run() {
                         if (!bot.getNavigator().isNavigating()) {
-                            botManager.getPlugin().getLogger().info("[AIBotPlugin] Bot is stuck! Choosing another point.");
+                            //botManager.getPlugin().getLogger().info("[AIBotPlugin] Bot is stuck! Choosing another point.");
                             startPatrol(bot); // Перезапускаем патруль с новой точкой
                         }
                     }
@@ -77,7 +77,7 @@ public class BotPatroling {
     
     public void setPatrolCenter(Location location) {
         this.patrolCenter = location;
-        botManager.getPlugin().getLogger().info("[AIBotPlugin] Patrol center set by command: " + location);
+        //botManager.getPlugin().getLogger().info("[AIBotPlugin] Patrol center set by command: " + location);
     }
     
 
@@ -117,11 +117,11 @@ public class BotPatroling {
     
         Location patrolPoint = getSafePatrolPoint();
         if (patrolPoint == null) {
-            botManager.getPlugin().getLogger().info("[AIBotPlugin] No safe patrol point found. Staying at patrol center.");
+            //botManager.getPlugin().getLogger().info("[AIBotPlugin] No safe patrol point found. Staying at patrol center.");
             patrolPoint = patrolCenter; // Если не нашли точку - остаёмся в центре
         }
     
-        botManager.getPlugin().getLogger().info("[AIBotPlugin] Continuing patrol. New target: " + patrolPoint);
+        //botManager.getPlugin().getLogger().info("[AIBotPlugin] Continuing patrol. New target: " + patrolPoint);
         bot.getNavigator().setTarget(patrolPoint);
     }
     
