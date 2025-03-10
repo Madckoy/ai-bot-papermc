@@ -7,7 +7,6 @@ com/devone/aibot/botlogic/BotNavigating$1.class
 com/devone/aibot/botlogic/WaterHandling.class
 com/devone/aibot/commands/BotList.class
 com/devone/aibot/botlogic/ResourceGathering$1.class
-com/devone/aibot/core/BotManager$1.class
 com/devone/aibot/core/ProtectedZone.class
 com/devone/aibot/botlogic/BotPatroling$1$1.class
 com/devone/aibot/core/ZoneManager.class

@@ -20,7 +20,7 @@ public class WaterHandling {
     }
 
     public void moveOutOfWater(NPC bot) {
-        Location botLoc = bot.getEntity().getLocation();
+        Location botLoc =  bot.getStoredLocation();
         Location landLoc = findLandTowardsPlayer(botLoc, 10);
 
         if (landLoc != null) {

@@ -27,57 +27,39 @@ public class BotPatroling {
     }
 
     public void startPatrol(NPC bot) {
-
-        if (bot.getEntity() == null) {
-            botManager.getPlugin().getLogger().warning("[AIBotPlugin] Bot entity is null after restart!");
-            return;
-        }
-        //--------------------
-        Location tree = ResourceDetecting.findNearbyTree(bot.getEntity().getLocation());
-        if (tree != null) {
-            new ResourceGathering(bot, this).chopTree(tree);
-        } else {
-            Item item = ResourceDetecting.findNearbyItem(bot.getEntity().getLocation());
-            if (item != null) {
-                new ResourceGathering(bot, this).collectItem(item);
-            } else {
-                LivingEntity mob = ResourceDetecting.findNearbyHostileMob(bot.getEntity().getLocation());
-                if (mob != null) {
-                    new ResourceGathering(bot, this).attackMob(mob);
-                } else {
-                    // Если ничего не найдено, продолжаем патрулирование
-                    botManager.getBotPatroling().continuePatrol(bot);
-                }
-            }
-        }
-
-        //--------------------
+        Location bot_loc = bot.getStoredLocation();
 
         if (patrolCenter == null) {
-            patrolCenter = bot.getEntity().getLocation();
+            patrolCenter = bot_loc;
             botManager.getPlugin().getLogger().info("[AIBotPlugin] Patrol center set to bot's current location.");
         }
     
         botManager.getPlugin().getLogger().info("[AIBotPlugin] Bot patrol started.");
+
+
+        if (!bot.isSpawned() || bot.getEntity() == null) {
+            botManager.getPlugin().getLogger().warning("[AIBotPlugin] Bot is not fully initialized. Trying to respawn...");
+            bot.spawn(bot.getStoredLocation()); // Принудительный респавн
+        }
     
         new BukkitRunnable() {
             @Override
             public void run() {
-                if (!bot.isSpawned() || patrolCenter == null) {
-                    botManager.getPlugin().getLogger().info("[AIBotPlugin] Bot not spawned or patrol center is null. Stopping patrol.");
-                    cancel();
-                    return;
-                }
-    
+ 
                 Location patrolPoint = getSafePatrolPoint();
                 if (patrolPoint == null) {
                     botManager.getPlugin().getLogger().info("[AIBotPlugin] No safe patrol point found! Retrying...");
+                    startPatrol(bot); // Перезапускаем патруль с новой точкой
                     return;
                 }
     
                 botManager.getPlugin().getLogger().info("[AIBotPlugin] New patrol target: " + patrolPoint);
-                bot.getNavigator().setTarget(patrolPoint);
-    
+                try {
+                    bot.getNavigator().setTarget(patrolPoint);
+                } catch (Exception e) {
+                    botManager.getPlugin().getLogger().warning("[AIBotPlugin] Failed to set target: " + e.getMessage());
+                }
+                        
                 // Проверяем, двигается ли бот через 10 секунд (а не 2!)
                 new BukkitRunnable() {
                     @Override
@@ -87,9 +69,9 @@ public class BotPatroling {
                             startPatrol(bot); // Перезапускаем патруль с новой точкой
                         }
                     }
-                }.runTaskLater(botManager.getPlugin(), 200L); // Проверяем через 10 секунд
+                }.runTaskLater(botManager.getPlugin(), 100L); // Проверяем через 10 секунд
             }
-        }.runTaskTimer(botManager.getPlugin(), 0L, 200L); // Бот меняет цель каждые 10 секунд
+        }.runTaskTimer(botManager.getPlugin(), 0L, 100L); // Бот меняет цель каждые 10 секунд
     }
     
     public void setPatrolCenter(Location location) {
@@ -129,7 +111,7 @@ public class BotPatroling {
 
     public void continuePatrol(NPC bot) {
         if (patrolCenter == null) {
-            patrolCenter = bot.getEntity().getLocation();
+            patrolCenter = bot.getStoredLocation();
         }
     
         Location patrolPoint = getSafePatrolPoint();

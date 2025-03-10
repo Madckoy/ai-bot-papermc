@@ -3,8 +3,7 @@ package com.devone.aibot.core;
 import net.citizensnpcs.api.CitizensAPI;
 import net.citizensnpcs.api.npc.NPC;
 import org.bukkit.Bukkit;
-import org.bukkit.scheduler.BukkitRunnable;
-
+import org.bukkit.Location;
 import com.devone.aibot.AIBotPlugin;
 import com.devone.aibot.botlogic.BotPatroling;
 
@@ -33,7 +32,7 @@ public class BotManager {
 
             // Reload existing bots from Citizens API after restart
             loadExistingBots();
-        }, 40L); // Delay ensures Citizens is fully loaded
+        }, 60L); // Delay ensures Citizens is fully loaded
     }
     // ✅ Get the bot patroling instance
     public BotPatroling getBotPatroling() {
@@ -128,49 +127,15 @@ public class BotManager {
     
             String botName = npc.getName();
             botMap.put(botName, npc);
-    
-            plugin.getLogger().info("[AIBotPlugin] Reloaded bot: " + botName + " (ID: " + npc.getId() + ")");
-            plugin.getLogger().info("[AIBotPlugin] Bot state: isSpawned=" + npc.isSpawned() +
-                    ", entity=" + (npc.getEntity() != null ? npc.getEntity().getType() : "null"));
-    
-            if (!npc.isSpawned() || npc.getEntity() == null) {
-                plugin.getLogger().warning("[AIBotPlugin] Bot is not fully initialized. Trying to respawn...");
-                npc.spawn(npc.getStoredLocation()); // Принудительный респавн
-            }
-    
-            new BukkitRunnable() {
-                int attempts = 0;
-    
-                @Override
-                public void run() {
-                    plugin.getLogger().info("[AIBotPlugin] Checking spawn state: isSpawned=" + npc.isSpawned() +
-                            ", entity=" + (npc.getEntity() != null ? npc.getEntity().getType() : "null"));
-    
-                    if (npc.isSpawned() && npc.getEntity() != null) {
-                        plugin.getLogger().info("[AIBotPlugin] Bot is now fully spawned. Starting patrol.");
-                        
-                        if (botPatroling.getPatrolCenter() == null) {
-                            botPatroling.setPatrolCenter(npc.getEntity().getLocation());
-                        }
-                        botPatroling.startPatrol(npc);
-                        cancel();
-                        return;
-                    }
-    
-                    attempts++;
-                    if (attempts >= 10) {
-                        plugin.getLogger().warning("[AIBotPlugin] Bot did not fully initialize after 5 seconds. Skipping patrol.");
-                        cancel();
-                    } else {
-                        plugin.getLogger().warning("[AIBotPlugin] Bot is still not fully spawned. Waiting...");
-                    }
-                }
-            }.runTaskTimer(plugin, 10L, 10L);
+
+            Location loc = npc.getStoredLocation();
+
+            botPatroling.setPatrolCenter(loc);
+            botPatroling.startPatrol(npc);
         }
     
         plugin.getLogger().info("[AIBotPlugin] Bot loading complete. Total bots: " + botMap.size());
+
     }
     
-    
-
 }
